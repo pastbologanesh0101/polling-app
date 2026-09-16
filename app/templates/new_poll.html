@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Create Poll - Polling Website{% endblock %}
+{% block content %}
+  <h2>Create a New Poll</h2>
+  <form method="post" action="{{ url_for('polls.new_poll') }}">
+    <label for="question">Question</label>
+    <input type="text" id="question" name="question" value="{{ question }}" required>
+
+    <fieldset>
+      <legend>Options (at least 2)</legend>
+      {% for option in options %}
+        <input type="text" name="option" value="{{ option }}" placeholder="Option {{ loop.index }}">
+      {% endfor %}
+      {% if options|length < 2 %}
+        <input type="text" name="option" placeholder="Option">
+        <input type="text" name="option" placeholder="Option">
+      {% endif %}
+    </fieldset>
+
+    <button type="submit">Create Poll</button>
+  </form>
+{% endblock %}

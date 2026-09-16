@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}All Polls - Polling Website{% endblock %}
+{% block content %}
+  <h2>All Polls</h2>
+  {% if polls %}
+    <ul class="poll-list">
+      {% for poll in polls %}
+        <li>
+          <a href="{{ url_for('polls.view_poll', poll_id=poll.id) }}">{{ poll.question }}</a>
+          <span class="meta">{{ poll.total_votes }} vote{{ 's' if poll.total_votes != 1 else '' }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No polls yet. <a href="{{ url_for('polls.new_poll') }}">Create the first one</a>.</p>
+  {% endif %}
+{% endblock %}

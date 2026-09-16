@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ poll.question }} - Polling Website{% endblock %}
+{% block content %}
+  <h2>{{ poll.question }}</h2>
+  <p class="meta">{{ poll.total_votes }} vote{{ 's' if poll.total_votes != 1 else '' }} &middot; created {{ poll.created_at }}</p>
+
+  <ul class="options">
+    {% for option in poll.options %}
+      <li>
+        <div class="option-row">
+          <span class="option-text">{{ option.text }}</span>
+          <span class="option-pct">{{ option.percentage }}% ({{ option.vote_count }})</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width: {{ option.percentage }}%;"></div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if has_voted %}
+    <p class="voted-note">You have already voted on this poll. Thanks!</p>
+  {% else %}
+    <form method="post" action="{{ url_for('polls.vote', poll_id=poll.id) }}">
+      {% for option in poll.options %}
+        <label class="radio-label">
+          <input type="radio" name="option_id" value="{{ option.id }}" required>
+          {{ option.text }}
+        </label>
+      {% endfor %}
+      <button type="submit">Vote</button>
+    </form>
+  {% endif %}
+
+  <p><a href="{{ url_for('polls.index') }}">&larr; Back to all polls</a></p>
+{% endblock %}
